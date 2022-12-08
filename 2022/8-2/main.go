@@ -11,38 +11,38 @@ func main() {
 	content, _ := ioutil.ReadFile("input.txt")
 	lines := strings.Split(string(content), "\n")
 
-	grid := []([]int){}
+	forest := []([]int){}
 
 	for _, line := range lines {
 		line = strings.TrimSpace(strings.Replace(line, "\r", "", -1))
 		rowSplit := strings.Split(line, "")
 
-		rowArray := []int{}
+		rows := []int{}
 		for _, row := range rowSplit {
 			r, _ := strconv.Atoi(row)
-			rowArray = append(rowArray, r)
+			rows = append(rows, r)
 		}
-		grid = append(grid, rowArray)
+		forest = append(forest, rows)
 	}
 
-	columnCount := len(grid)
-	rowCount := len(grid[0])
+	columnCount := len(forest)
+	rowCount := len(forest[0])
 
 	maxScore := 0
 
-	for ic, column := range grid {
+	for ic, column := range forest {
 		for ir, tree := range column {
 			topScore := 0
 			for i := ic - 1; i >= 0; i-- {
 				topScore++
-				if grid[i][ir] >= tree {
+				if forest[i][ir] >= tree {
 					break
 				}
 			}
 			botScore := 0
 			for i := ic + 1; i < columnCount; i++ {
 				botScore++
-				if grid[i][ir] >= tree {
+				if forest[i][ir] >= tree {
 					break
 				}
 			}
@@ -50,14 +50,14 @@ func main() {
 			leftScore := 0
 			for i := ir - 1; i >= 0; i-- {
 				leftScore++
-				if grid[ic][i] >= tree {
+				if forest[ic][i] >= tree {
 					break
 				}
 			}
 			rightScore := 0
 			for i := ir + 1; i < rowCount; i++ {
 				rightScore++
-				if grid[ic][i] >= tree {
+				if forest[ic][i] >= tree {
 					break
 				}
 			}
