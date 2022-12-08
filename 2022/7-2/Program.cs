@@ -33,8 +33,7 @@ foreach (var line in text)
             }
             else
             {
-                var existingChild = currentElement.Children.FirstOrDefault(item => item.Name == path);
-                if (existingChild == null)
+                if (!currentElement.Children.Any(item => item.Name == path))
                 {
                     currentElement.Children.Add(new TreeNode()
                     {
@@ -45,18 +44,11 @@ foreach (var line in text)
                         Children = new()
                     });
                 }
-                else
-                {
-                    currentElement = existingChild;
-                }
+                var child = currentElement.Children.FirstOrDefault(item => item.Name == path);
+                currentElement = child;
             }
-            continue;
         }
-        if (line.Contains(" ls"))
-        {
-            //should I do something here?
-            continue;
-        }
+        continue;
     }
     if (line.StartsWith("dir "))
     {
