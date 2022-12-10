@@ -11,8 +11,7 @@ func main() {
 	content, _ := ioutil.ReadFile("input.txt")
 	var lines = strings.Split(string(content), "\n")
 
-	for i := 99999999999999; i > 9999999999999; i-- {
-		fmt.Println(i)
+	for i := 99999378149762; i > 9999999999999; i-- {
 		inpIndex := 0
 		inpList := strings.Split(fmt.Sprint(i), "")
 		if strings.Count(fmt.Sprint(i), "0") > 0 {
@@ -63,9 +62,15 @@ func main() {
 				}
 			}
 		}
-		if !invalidAlu && variables["z"] == 0 {
-			fmt.Println("Success!")
+		fmt.Print(i)
+		if invalidAlu {
+			fmt.Print(" - invalid")
+		} else if variables["z"] != 0 {
+			fmt.Printf(" - %d", variables["z"])
+		} else {
+			fmt.Print(" - success!")
 			break
 		}
+		fmt.Println()
 	}
 }
