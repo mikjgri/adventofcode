@@ -18,28 +18,21 @@ func readLinesAndTrim(file string) []string {
 	return lines
 }
 
-type Pair struct {
-	left  []interface{}
-	right []interface{}
-}
-
 func makeJsonAndParse(input string) []interface{} {
 	var temp map[string][]interface{}
 	wrappedInput := fmt.Sprintf("{\"temp\":[%s]}", input)
 	json.Unmarshal([]byte(wrappedInput), &temp)
 	return temp["temp"]
 }
-func buildPairs(lines []string) []Pair {
-	pairs := []Pair{}
-	for i := range lines {
-		if (i+1)%3 == 0 {
-			pairs = append(pairs, Pair{
-				left:  makeJsonAndParse(lines[i-2]),
-				right: makeJsonAndParse(lines[i-1]),
-			})
+func getPackets(lines []string) []interface{} {
+	var packets []interface{}
+
+	for _, line := range lines {
+		if line != "" {
+			packets = append(packets, makeJsonAndParse(line))
 		}
 	}
-	return pairs
+	return packets
 }
 func isNumber(input interface{}) bool {
 	return reflect.TypeOf(input).String() == "float64"
@@ -85,15 +78,29 @@ func compareSides(left interface{}, right interface{}) int {
 }
 
 func main() {
-	lines := readLinesAndTrim("input.txt")
-	pairs := buildPairs(lines)
+	dividerPackets := append(make([]interface{}, 0), makeJsonAndParse("[[2]]"), makeJsonAndParse("[[6]]"))
 
-	indicesInOrderSum := 0
-	for pairIndex, pair := range pairs {
-		if compareSides(pair.left, pair.right) == -1 {
-			indicesInOrderSum += pairIndex + 1
+	lines := readLinesAndTrim("input.txt")
+	packets := getPackets(lines)
+	packets = append(packets, dividerPackets...)
+
+	didSwap := true
+	for didSwap == true {
+		didSwap = false
+		for i := 0; i < len(packets)-1; i++ {
+			if compareSides(packets[i], packets[i+1]) == 1 {
+				packets[i], packets[i+1] = packets[i+1], packets[i]
+				didSwap = true
+			}
 		}
 	}
-
-	fmt.Println(indicesInOrderSum)
+	getDividerIndex := func(dividerPackage interface{}) int {
+		for i, packet := range packets {
+			if fmt.Sprintf("%v", packet) == fmt.Sprintf("%v", dividerPackage) {
+				return i + 1
+			}
+		}
+		return -1
+	}
+	fmt.Println(getDividerIndex(dividerPackets[0]) * getDividerIndex(dividerPackets[1]))
 }
