@@ -48,12 +48,12 @@ func buildPairs(lines []string) []SensorBeaconPair {
 }
 
 func main() {
-	lines := readLinesAndTrim("example.txt")
+	lines := readLinesAndTrim("input.txt")
 	pairs := buildPairs(lines)
 	pairsLength := len(pairs)
 
-	godRow := 10
-	// godRow := 2000000
+	// godRow := 10
+	godRow := 2000000
 	someMap := sync.Map{}
 
 	minX, maxX := math.MaxInt, math.MinInt
@@ -77,6 +77,7 @@ func main() {
 			}
 			max := bsxDiff + bsyDiff
 			if pair.sensor.y+max < godRow || pair.sensor.y-max > godRow {
+				fmt.Printf("Pair %d skipped...\n", i)
 				return
 			}
 			//dbg
