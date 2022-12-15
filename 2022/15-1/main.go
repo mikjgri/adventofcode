@@ -7,6 +7,7 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"sync"
 )
 
 func readLinesAndTrim(file string) []string {
@@ -47,69 +48,79 @@ func buildPairs(lines []string) []SensorBeaconPair {
 }
 
 func main() {
-	lines := readLinesAndTrim("input.txt")
+	lines := readLinesAndTrim("example.txt")
 	pairs := buildPairs(lines)
+	pairsLength := len(pairs)
 
-	// godRow := 10
-	godRow := 2000000
-	solutionRow := map[int]string{}
+	godRow := 10
+	// godRow := 2000000
+	someMap := sync.Map{}
 
 	minX, maxX := math.MaxInt, math.MinInt
 
-	for i, pair := range pairs {
-		fmt.Printf("Pair %d", i)
-		fmt.Println()
-		if pair.beacon.y == godRow {
-			solutionRow[pair.beacon.x] = "B"
-		}
-
-		bsxDiff, bsyDiff := pair.beacon.x-pair.sensor.x, pair.beacon.y-pair.sensor.y
-		if bsxDiff < 0 {
-			bsxDiff *= -1
-		}
-		if bsyDiff < 0 {
-			bsyDiff *= -1
-		}
-		max := bsxDiff + bsyDiff
-		if pair.sensor.y+max < godRow || pair.sensor.y-max > godRow {
-			continue
-		}
-		//dbg
-		totalInPair := max * max
-		fmt.Println("Total in pair:", totalInPair)
-		doneInPair := 0
-
-		for x := pair.sensor.x - max; x <= pair.sensor.x+max; x++ {
-			if x < minX {
-				minX = x
+	var wg sync.WaitGroup
+	wg.Add(pairsLength)
+	for i := 0; i < pairsLength; i++ {
+		go func(i int) {
+			defer wg.Done()
+			pair := pairs[i]
+			if pair.beacon.y == godRow {
+				someMap.Store(pair.beacon.x, "B")
 			}
-			if x > maxX {
-				maxX = x
-			}
-			for y := pair.sensor.y - max; y <= pair.sensor.y+max; y++ {
-				doneInPair++
-				if y != godRow {
-					continue
-				}
-				xDiff, yDiff := x-pair.sensor.x, y-pair.sensor.y
-				if xDiff < 0 {
-					xDiff *= -1
-				}
 
-				if yDiff < 0 {
-					yDiff *= -1
+			bsxDiff, bsyDiff := pair.beacon.x-pair.sensor.x, pair.beacon.y-pair.sensor.y
+			if bsxDiff < 0 {
+				bsxDiff *= -1
+			}
+			if bsyDiff < 0 {
+				bsyDiff *= -1
+			}
+			max := bsxDiff + bsyDiff
+			if pair.sensor.y+max < godRow || pair.sensor.y-max > godRow {
+				return
+			}
+			//dbg
+			totalInPair := max * max
+			fmt.Printf("Pair %d with total %d started...\n", i, totalInPair)
+			doneInPair := 0
+
+			for x := pair.sensor.x - max; x <= pair.sensor.x+max; x++ {
+				if x < minX {
+					minX = x
 				}
-				if xDiff+yDiff <= max {
-					if solutionRow[x] != "B" {
-						solutionRow[x] = "#"
+				if x > maxX {
+					maxX = x
+				}
+				for y := pair.sensor.y - max; y <= pair.sensor.y+max; y++ {
+					doneInPair++
+					if y != godRow {
+						continue
+					}
+					xDiff, yDiff := x-pair.sensor.x, y-pair.sensor.y
+					if xDiff < 0 {
+						xDiff *= -1
+					}
+
+					if yDiff < 0 {
+						yDiff *= -1
+					}
+					if xDiff+yDiff <= max {
+						val, _ := someMap.Load(x)
+						if val != "B" {
+							someMap.Store(x, "#")
+						}
 					}
 				}
 			}
-		}
+			fmt.Printf("Done with pair: %d\n", i)
+		}(i)
 	}
+	wg.Wait()
+
 	beaconSafe := 0
 	for x := minX; x <= maxX; x++ {
-		if solutionRow[x] == "#" {
+		val, _ := someMap.Load(x)
+		if val == "#" {
 			beaconSafe++
 		}
 		// fmt.Print(solutionRow[x])
