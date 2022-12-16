@@ -46,7 +46,9 @@ func buildPairs(lines []string) []SensorBeaconPair {
 	}
 	return result
 }
-
+func getAbs(inp int) int {
+	return int(math.Abs(float64(inp)))
+}
 func main() {
 	lines := readLinesAndTrim("input.txt")
 	pairs := buildPairs(lines)
@@ -55,9 +57,6 @@ func main() {
 	// godRow := 10
 	godRow := 2000000
 	someMap := sync.Map{}
-
-	minX, maxX := math.MaxInt, math.MinInt
-
 	var wg sync.WaitGroup
 	wg.Add(pairsLength)
 	for i := 0; i < pairsLength; i++ {
@@ -68,49 +67,18 @@ func main() {
 				someMap.Store(pair.beacon.x, "B")
 			}
 
-			bsxDiff, bsyDiff := pair.beacon.x-pair.sensor.x, pair.beacon.y-pair.sensor.y
-			if bsxDiff < 0 {
-				bsxDiff *= -1
-			}
-			if bsyDiff < 0 {
-				bsyDiff *= -1
-			}
+			bsxDiff, bsyDiff := getAbs(pair.beacon.x-pair.sensor.x), getAbs(pair.beacon.y-pair.sensor.y)
 			max := bsxDiff + bsyDiff
 			if pair.sensor.y+max < godRow || pair.sensor.y-max > godRow {
 				fmt.Printf("Pair %d skipped...\n", i)
 				return
 			}
-			//dbg
-			totalInPair := max * max
-			fmt.Printf("Pair %d with total %d started...\n", i, totalInPair)
-			doneInPair := 0
-
-			for x := pair.sensor.x - max; x <= pair.sensor.x+max; x++ {
-				if x < minX {
-					minX = x
-				}
-				if x > maxX {
-					maxX = x
-				}
-				for y := pair.sensor.y - max; y <= pair.sensor.y+max; y++ {
-					doneInPair++
-					if y != godRow {
-						continue
-					}
-					xDiff, yDiff := x-pair.sensor.x, y-pair.sensor.y
-					if xDiff < 0 {
-						xDiff *= -1
-					}
-
-					if yDiff < 0 {
-						yDiff *= -1
-					}
-					if xDiff+yDiff <= max {
-						val, _ := someMap.Load(x)
-						if val != "B" {
-							someMap.Store(x, "#")
-						}
-					}
+			godRowDiff := getAbs(pair.sensor.y - godRow)
+			lenToCheck := max - godRowDiff
+			for j := pair.sensor.x - lenToCheck; j <= pair.sensor.x+lenToCheck; j++ {
+				val, _ := someMap.Load(j)
+				if val != "B" {
+					someMap.Store(j, "#")
 				}
 			}
 			fmt.Printf("Done with pair: %d\n", i)
@@ -119,12 +87,13 @@ func main() {
 	wg.Wait()
 
 	beaconSafe := 0
-	for x := minX; x <= maxX; x++ {
-		val, _ := someMap.Load(x)
+
+	someMap.Range(func(k, v interface{}) bool {
+		val := v.(string)
 		if val == "#" {
 			beaconSafe++
 		}
-		// fmt.Print(solutionRow[x])
-	}
+		return true
+	})
 	fmt.Printf("Beacon safe: %d\n", beaconSafe)
 }
