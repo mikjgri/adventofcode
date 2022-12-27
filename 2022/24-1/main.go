@@ -130,6 +130,7 @@ func main() {
 		blizzardStates = append(blizzardStates, nextBlizzards)
 		visitedArrays = append(visitedArrays, getVisitedArray(len(array), len(array[0])))
 	}
+
 	quickestSolution := math.MaxInt32
 	var tryDoMove func(position []int, minutes int) (bool, int)
 	tryDoMove = func(position []int, minutes int) (bool, int) {
