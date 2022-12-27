@@ -22,13 +22,13 @@ func readLinesAndTrim(file string) []string {
 type Coordinates struct {
 	x, y int
 }
-type SensorBeaconPair struct {
-	sensor Coordinates
-	beacon Coordinates
+type Sensor struct {
+	coord             Coordinates
+	manhattanDistance int
 }
 
-func buildPairs(lines []string) []SensorBeaconPair {
-	var result []SensorBeaconPair
+func buildSensors(lines []string) []Sensor {
+	var result []Sensor
 	for _, line := range lines {
 		split := strings.Split(line, ":")
 		r, _ := regexp.Compile("[-\\d]+")
@@ -41,71 +41,55 @@ func buildPairs(lines []string) []SensorBeaconPair {
 		beacon.x, _ = strconv.Atoi(bs[0])
 		beacon.y, _ = strconv.Atoi(bs[1])
 
-		result = append(result, SensorBeaconPair{sensor: sensor, beacon: beacon})
+		result = append(result, Sensor{coord: sensor, manhattanDistance: getManhattenDistance(sensor, beacon)})
 	}
 	return result
+}
+func getManhattenDistance(c1, c2 Coordinates) int {
+	bsxDiff, bsyDiff := getAbs(c1.x-c2.x), getAbs(c1.y-c2.y)
+	return bsxDiff + bsyDiff
 }
 func getAbs(inp int) int {
 	return int(math.Abs(float64(inp)))
 }
-func build2dArray(maxAxis int) [][]bool {
-	result := [][]bool{}
-	for i := 0; i <= maxAxis; i++ {
-		result = append(result, []bool{})
-		for j := 0; j <= maxAxis; j++ {
-			result[i] = append(result[i], false)
+func isReachable(sensors []Sensor, c Coordinates) bool {
+	for _, sensor := range sensors {
+		manhattenDistance := getManhattenDistance(c, sensor.coord)
+		if sensor.manhattanDistance >= manhattenDistance {
+			return true
 		}
 	}
-	return result
+	return false
 }
 func main() {
 	lines := readLinesAndTrim("input.txt")
-	// lines := readLinesAndTrim("example.txt")
-	pairs := buildPairs(lines)
+	sensors := buildSensors(lines)
 
-	maxAxis := 4000000
-	// maxAxis := 20
-	arr := build2dArray(maxAxis)
+	max := 4000000
+	for _, sensor := range sensors {
+		distance := sensor.manhattanDistance + 1
 
-	for i, pair := range pairs {
-		bsxDiff, bsyDiff := getAbs(pair.beacon.x-pair.sensor.x), getAbs(pair.beacon.y-pair.sensor.y)
-		max := bsxDiff + bsyDiff
-		if pair.sensor.y-max > maxAxis || pair.sensor.x-max > maxAxis {
-			fmt.Printf("Pair %d skipped...\n", i)
-			return
-		}
-		maxY := pair.sensor.y + max
-		if maxY > maxAxis {
-			maxY = maxAxis
-		}
-		startY := pair.sensor.y - max
-		if startY < 0 {
-			startY = 0
-		}
+		for i := 0; i < distance; i++ {
+			targetRow := sensor.coord.y + i
+			if targetRow < 0 {
+				continue
+			}
+			if targetRow > max {
+				break
+			}
+			colOffset := distance - getAbs(i)
 
-		for y := startY; y <= maxY; y++ {
-			xLen := max - getAbs(y-pair.sensor.y)
-			startX := pair.sensor.x - xLen
-			if startX < 0 {
-				startX = 0
-			}
-			maxX := pair.sensor.x + xLen
-			if maxX > maxAxis {
-				maxX = maxAxis
-			}
-			for x := startX; x <= maxX; x++ {
-				arr[y][x] = true
-			}
-		}
-		fmt.Printf("Done with pair: %d\n", i)
-	}
-	for i := range arr {
-		for j := range arr[i] {
-			if !arr[i][j] {
-				fmt.Printf("x=%d,y=%d\n", j, i)
-				val := j*4000000 + i
-				fmt.Println(val)
-				return
+			coordsToCheck := []Coordinates{}
+			coordsToCheck = append(coordsToCheck, Coordinates{x: sensor.coord.x - colOffset, y: targetRow}) //left
+			coordsToCheck = append(coordsToCheck, Coordinates{x: sensor.coord.x + colOffset, y: targetRow}) //right
+
+			for _, coord := range coordsToCheck {
+				if coord.x >= 0 && coord.x <= max {
+					if !isReachable(sensors, coord) {
+						fmt.Printf("%d", coord.x*4000000+coord.y)
+						return
+					}
+				}
 			}
 		}
 	}
