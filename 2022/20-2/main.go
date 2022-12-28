@@ -23,7 +23,7 @@ func getListOfNumbersWithIds(lines []string) []NumberWithId {
 	id := 0
 	for _, line := range lines {
 		number, _ := strconv.Atoi(line)
-		numbers = append(numbers, NumberWithId{id, number})
+		numbers = append(numbers, NumberWithId{id, number * 811589153})
 		id++
 	}
 	return numbers
@@ -61,23 +61,26 @@ func getNumberAtIndex(index int, numbers []NumberWithId) NumberWithId {
 func main() {
 	lines := readLinesAndTrim("input.txt")
 	numbers := getListOfNumbersWithIds(lines)
-	for i := 0; i < len(numbers); i++ {
-		number := getNumberWithId(i, numbers)
-		indexOfNumber := slices.IndexFunc(numbers, func(c NumberWithId) bool { return c.id == number.id })
-		newIndex := modNeg(indexOfNumber+number.number, len(numbers)-1)
-		if newIndex == 0 {
-			newIndex = len(numbers) - 1
+
+	for round := 0; round < 10; round++ {
+		for i := 0; i < len(numbers); i++ {
+			number := getNumberWithId(i, numbers)
+			indexOfNumber := slices.IndexFunc(numbers, func(c NumberWithId) bool { return c.id == number.id })
+			newIndex := modNeg(indexOfNumber+number.number, len(numbers)-1)
+			if newIndex == 0 {
+				newIndex = len(numbers) - 1
+			}
+			front, back := numbers[:indexOfNumber], numbers[indexOfNumber+1:]
+
+			//removed number in question
+			numbers = append(front, back...)
+			numbers = insertAtIndex(newIndex, number, numbers)
+
+			// for _, number := range numbers {
+			// 	fmt.Printf("%d,", number.number)
+			// }
+			// fmt.Println("\n-----")
 		}
-		front, back := numbers[:indexOfNumber], numbers[indexOfNumber+1:]
-
-		//removed number in question
-		numbers = append(front, back...)
-		numbers = insertAtIndex(newIndex, number, numbers)
-
-		// for _, number := range numbers {
-		// 	fmt.Printf("%d,", number.number)
-		// }
-		// fmt.Println("\n-----")
 	}
 	indexOf0 := slices.IndexFunc(numbers, func(c NumberWithId) bool { return c.number == 0 })
 
