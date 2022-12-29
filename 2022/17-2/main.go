@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -21,6 +22,10 @@ type Rock struct {
 }
 type Coord struct {
 	x, y int
+}
+type State struct {
+	height        int
+	rockIteration int
 }
 
 func getRocks(lines []string) []Rock {
@@ -73,44 +78,6 @@ func getRockSpawn(rock Rock, cave [][]bool) (int, int) {
 	y, x := highestY+rockHeight+3, 2
 	return x, y
 }
-func visualize(cave [][]bool, rockCoordinates []Coord) {
-	return
-	for i := len(cave) - 1; i >= 0; i-- {
-		if i == 0 {
-			fmt.Print("+")
-		} else {
-			fmt.Print("|")
-		}
-		for j := 0; j < len(cave[i]); j++ {
-			if cave[i][j] {
-				if i == 0 {
-					fmt.Print("-")
-				} else {
-					fmt.Print("#")
-				}
-			} else {
-				hasRock := false
-				for k := 0; k < len(rockCoordinates); k++ {
-					if rockCoordinates[k].x == j && rockCoordinates[k].y == i {
-						hasRock = true
-					}
-				}
-				if hasRock {
-					fmt.Print("@")
-				} else {
-					fmt.Print(".")
-				}
-			}
-		}
-		if i == 0 {
-			fmt.Print("+")
-		} else {
-			fmt.Print("|")
-		}
-		fmt.Println()
-	}
-	fmt.Println()
-}
 func canMoveDown(rockCoordinates []Coord, cave [][]bool) bool {
 	for i := 0; i < len(rockCoordinates); i++ {
 		if cave[rockCoordinates[i].y-1][rockCoordinates[i].x] {
@@ -132,15 +99,37 @@ func canBePushed(rockCoordinates []Coord, cave [][]bool, direction int) bool {
 	}
 	return true
 }
+func getRockIndex(iteration int, rocks []Rock) int {
+	return iteration % len(rocks)
+}
 func getNextRock(iteration int, rocks []Rock) Rock {
-	return rocks[iteration%len(rocks)]
+	return rocks[getRockIndex(iteration, rocks)]
+}
+func getJetPatternIndex(iteration int, jetPatterns []int) int {
+	return iteration % len(jetPatterns)
 }
 func getNextJetPattern(iteration int, jetPatterns []int) int {
-	return jetPatterns[iteration%len(jetPatterns)]
+	return jetPatterns[getJetPatternIndex(iteration, jetPatterns)]
 }
-
+func getStateHash(cave [][]bool, jetPatternIndex, rockIndex int) string {
+	maxY := findHighestY(cave)
+	topNodes := []int{}
+	for x := 0; x < len(cave[0]); x++ {
+		for y := len(cave) - 1; y >= 0; y-- {
+			if cave[y][x] {
+				topNodes = append(topNodes, y-maxY)
+				break
+			}
+		}
+	}
+	hash := fmt.Sprintf("%v", topNodes)
+	hash += strconv.Itoa(jetPatternIndex)
+	hash += "--"
+	hash += strconv.Itoa(rockIndex)
+	return hash
+}
 func main() {
-	lines := readLinesAndTrim("example.txt")
+	lines := readLinesAndTrim("input.txt")
 	rockLines := readLinesAndTrim("rocks.txt")
 	rocks := getRocks(rockLines)
 	jetPatterns := getJetPatterns(lines[0])
@@ -152,13 +141,12 @@ func main() {
 	}
 	cave = append(cave, floor)
 
+	stateHashList := map[string]State{}
 	jetPatternIterations := 0
-	for rocksFallen := 0; rocksFallen < 1000000000000; rocksFallen++ {
-		if rocksFallen%10000000 == 0 {
-			percentDone := float64(rocksFallen) / 1000000000000 * 100
-			fmt.Printf("%.3f%% done\n", percentDone)
-		}
-		rock := getNextRock(rocksFallen, rocks)
+	rockIteration := 0
+
+	fireInTheHole := func(cave [][]bool) [][]bool {
+		rock := getNextRock(rockIteration, rocks)
 		spawnX, spawnY := getRockSpawn(rock, cave)
 		//place rock
 		rockCoordinates := []Coord{}
@@ -178,7 +166,6 @@ func main() {
 				cave[len(cave)-1] = append(cave[len(cave)-1], false)
 			}
 		}
-		visualize(cave, rockCoordinates)
 		rockIsMoving := true
 		for rockIsMoving {
 			rockIsMoving = false
@@ -195,12 +182,44 @@ func main() {
 					rockCoordinates[i].y--
 				}
 			}
-			visualize(cave, rockCoordinates)
 		}
 		for i := 0; i < len(rockCoordinates); i++ {
 			cave[rockCoordinates[i].y][rockCoordinates[i].x] = true
 		}
-		visualize(cave, []Coord{})
+		return cave
 	}
-	fmt.Println(findHighestY(cave))
+
+	currentState := State{height: 0, rockIteration: 0}
+	targetIterations := 1000000000000
+	duplicateStateFound := false
+	for !duplicateStateFound {
+		cave = fireInTheHole(cave)
+		highestY := findHighestY(cave)
+		stateHash := getStateHash(cave, getJetPatternIndex(jetPatternIterations, jetPatterns), getRockIndex(rockIteration, rocks))
+		if prevState, ok := stateHashList[stateHash]; ok {
+			currentState.height = prevState.height
+			currentState.rockIteration = prevState.rockIteration
+
+			diffHeight := highestY - prevState.height
+			diffIterations := rockIteration - prevState.rockIteration
+			cyclesToAdd := (targetIterations - currentState.rockIteration) / diffIterations
+
+			currentState.height += cyclesToAdd * diffHeight
+			currentState.rockIteration += cyclesToAdd * diffIterations
+
+			duplicateStateFound = true
+		} else {
+			stateHashList[stateHash] = State{height: highestY, rockIteration: rockIteration}
+		}
+		rockIteration++
+	}
+	rockIteration = currentState.rockIteration
+	for rockIteration < targetIterations {
+		oldHeight := findHighestY(cave)
+		cave = fireInTheHole(cave)
+		newHeight := findHighestY(cave)
+		currentState.height += newHeight - oldHeight
+		rockIteration++
+	}
+	fmt.Println(currentState.height)
 }
