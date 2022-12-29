@@ -16,18 +16,18 @@ func readLinesAndTrim(file string) []string {
 	return lines
 }
 
-type Droplet struct {
+type Cube struct {
 	x, y, z int
 }
 
-func getDroplets(lines []string) []Droplet {
-	droplets := []Droplet{}
+func getCubes(lines []string) []Cube {
+	cubes := []Cube{}
 	for _, line := range lines {
 		var x, y, z int
 		fmt.Sscanf(line, "%d,%d,%d", &x, &y, &z)
-		droplets = append(droplets, Droplet{x, y, z})
+		cubes = append(cubes, Cube{x, y, z})
 	}
-	return droplets
+	return cubes
 }
 func diffCheck(a, b int, res *[]bool) {
 	diff := a - b
@@ -40,23 +40,23 @@ func diffCheck(a, b int, res *[]bool) {
 
 func main() {
 	lines := readLinesAndTrim("input.txt")
-	droplets := getDroplets(lines)
+	cubes := getCubes(lines)
 
 	clearSides := 0
-	for _, dropletToCheck := range droplets {
+	for _, cube1 := range cubes {
 		clear := [3][]bool{{true, true}, {true, true}, {true, true}}
-		for _, otherDroplet := range droplets {
-			if dropletToCheck == otherDroplet {
+		for _, cube2 := range cubes {
+			if cube1 == cube2 {
 				continue
 			}
-			if dropletToCheck.x == otherDroplet.x && dropletToCheck.y == otherDroplet.y {
-				diffCheck(dropletToCheck.z, otherDroplet.z, &clear[2])
+			if cube1.x == cube2.x && cube1.y == cube2.y {
+				diffCheck(cube1.z, cube2.z, &clear[2])
 			}
-			if dropletToCheck.x == otherDroplet.x && dropletToCheck.z == otherDroplet.z {
-				diffCheck(dropletToCheck.y, otherDroplet.y, &clear[1])
+			if cube1.x == cube2.x && cube1.z == cube2.z {
+				diffCheck(cube1.y, cube2.y, &clear[1])
 			}
-			if dropletToCheck.y == otherDroplet.y && dropletToCheck.z == otherDroplet.z {
-				diffCheck(dropletToCheck.x, otherDroplet.x, &clear[0])
+			if cube1.y == cube2.y && cube1.z == cube2.z {
+				diffCheck(cube1.x, cube2.x, &clear[0])
 			}
 		}
 		for _, axis := range clear {
