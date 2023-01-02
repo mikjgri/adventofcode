@@ -55,65 +55,84 @@ func cloneState(state State) State {
 	return newState
 }
 
+type Move struct {
+	openValve bool
+	position  string
+}
+
 func main() {
 	lines := readLinesAndTrim("example.txt")
 	valves := getAllVales(lines)
 	maxTime := 30
 
-	var move func(state State, position string) State
-	move = func(state State, position string) State {
+	var move func(state State, moves []Move) State
+	move = func(state State, moves []Move) State {
 		if state.time >= maxTime {
 			return state
 		}
 
-		//has visited at current state
-		for _, visitedValve := range state.visitedValvesAtState {
-			if visitedValve == position {
-				return state
+		positions := []string{}
+		for _, move := range moves {
+			positions = append(positions, move.position)
+			if move.openValve {
+				state.openValves = append(state.openValves, move.position)
+				state.visitedValvesAtState = []string{}
 			}
 		}
-		state.visitedValvesAtState = append(state.visitedValvesAtState, position)
 
 		for _, openedValve := range state.openValves {
 			state.pressureReleased += valves[openedValve].flow
 		}
 		state.time++
 
-		valve := valves[position]
-
-		valveCanBeOpened := valve.flow > 0
-		if valveCanBeOpened {
-			for _, openedValve := range state.openValves {
-				if openedValve == position {
-					valveCanBeOpened = false
-					break
-				}
+		positionsHash := strings.Join(positions, "")
+		//has visited at current state
+		for _, visitedHash := range state.visitedValvesAtState {
+			if visitedHash == positionsHash {
+				return state
 			}
 		}
+		state.visitedValvesAtState = append(state.visitedValvesAtState, positionsHash)
 
-		paths := []State{}
-		if valveCanBeOpened {
-			newState := cloneState(state)
-			newState.openValves = append(newState.openValves, position)
-			newState.visitedValvesAtState = []string{}
-			paths = append(paths, move(newState, position))
-		}
-		for _, connection := range valve.connections {
-			newState := cloneState(state)
-			paths = append(paths, move(newState, connection))
-		}
-		if len(paths) == 0 { //no more paths
-			return state
+		nextMoves := [][]Move{}
+
+		for _, position := range positions {
+			cMoves := []Move{}
+			valve := valves[position]
+			valveCanBeOpened := valve.flow > 0
+			if valveCanBeOpened {
+				for _, openedValve := range state.openValves {
+					if openedValve == position {
+						valveCanBeOpened = false
+						break
+					}
+				}
+			}
+
+			if valveCanBeOpened {
+				cMoves = append(cMoves, Move{openValve: true, position: position})
+			}
+			for _, connection := range valve.connections {
+				cMoves = append(cMoves, Move{openValve: false, position: connection})
+			}
+			nextMoves = append(nextMoves, cMoves)
 		}
 
 		bestPath := State{pressureReleased: -1}
-		for _, path := range paths {
-			if path.pressureReleased > bestPath.pressureReleased {
-				bestPath = path
+		newState := cloneState(state)
+		for _, fMoves := range nextMoves[0] {
+			for _, sMoves := range nextMoves[1] {
+				cMoves := []Move{fMoves, sMoves}
+				moveRes := move(newState, cMoves)
+				if moveRes.pressureReleased > bestPath.pressureReleased {
+					bestPath = moveRes
+				}
 			}
 		}
 		return bestPath
 	}
-	bestPath := move(State{time: 0, pressureReleased: 0, openValves: []string{}, visitedValvesAtState: []string{}}, "AA")
+	// startMoves := []Move{{openValve: false, position: "AA"}}
+	startMoves := []Move{{openValve: false, position: "AA"}, {openValve: false, position: "AA"}}
+	bestPath := move(State{time: 0, pressureReleased: 0, openValves: []string{}, visitedValvesAtState: []string{}}, startMoves)
 	fmt.Println(bestPath.pressureReleased)
 }

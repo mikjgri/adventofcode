@@ -56,14 +56,30 @@ func cloneState(state State) State {
 }
 
 func main() {
-	lines := readLinesAndTrim("example.txt")
+	lines := readLinesAndTrim("input.txt")
 	valves := getAllVales(lines)
 	maxTime := 30
 
-	var move func(state State, position string) State
-	move = func(state State, position string) State {
+	var move func(state State, position string, openValve bool) State
+	move = func(state State, position string, openValve bool) State {
 		if state.time >= maxTime {
 			return state
+		}
+
+		valve := valves[position]
+
+		valveCanBeOpened := valve.flow > 0
+		if valveCanBeOpened {
+			for _, openedValve := range state.openValves {
+				if openedValve == position {
+					valveCanBeOpened = false
+					break
+				}
+			}
+		}
+		if valveCanBeOpened && openValve {
+			state.openValves = append(state.openValves, position)
+			state.visitedValvesAtState = []string{}
 		}
 
 		//has visited at current state
@@ -79,28 +95,14 @@ func main() {
 		}
 		state.time++
 
-		valve := valves[position]
-
-		valveCanBeOpened := valve.flow > 0
-		if valveCanBeOpened {
-			for _, openedValve := range state.openValves {
-				if openedValve == position {
-					valveCanBeOpened = false
-					break
-				}
-			}
-		}
-
 		paths := []State{}
 		if valveCanBeOpened {
 			newState := cloneState(state)
-			newState.openValves = append(newState.openValves, position)
-			newState.visitedValvesAtState = []string{}
-			paths = append(paths, move(newState, position))
+			paths = append(paths, move(newState, position, true))
 		}
 		for _, connection := range valve.connections {
 			newState := cloneState(state)
-			paths = append(paths, move(newState, connection))
+			paths = append(paths, move(newState, connection, false))
 		}
 		if len(paths) == 0 { //no more paths
 			return state
@@ -114,6 +116,6 @@ func main() {
 		}
 		return bestPath
 	}
-	bestPath := move(State{time: 0, pressureReleased: 0, openValves: []string{}, visitedValvesAtState: []string{}}, "AA")
+	bestPath := move(State{time: 0, pressureReleased: 0, openValves: []string{}, visitedValvesAtState: []string{}}, "AA", false)
 	fmt.Println(bestPath.pressureReleased)
 }

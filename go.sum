@@ -1,2 +1,4 @@
+github.com/schwarmco/go-cartesian-product v0.0.0-20180515110546-d5ee747a6dc9 h1:rIlaPhb87A5GJy0FbjlxesD2lyr052gS/pF6NSAvSEo=
+github.com/schwarmco/go-cartesian-product v0.0.0-20180515110546-d5ee747a6dc9/go.mod h1:0jtE6j9sPEDD6gfLzxwt1eF2VI6u/w1sQ99IuZcUfyk=
 golang.org/x/exp v0.0.0-20221227203929-1b447090c38c h1:Govq2W3bnHJimHT2ium65kXcI7ZzTniZHcFATnLJM0Q=
 golang.org/x/exp v0.0.0-20221227203929-1b447090c38c/go.mod h1:CxIveKay+FTh1D0yPZemJVgC/95VzuuOLq5Qi4xnoYc=
