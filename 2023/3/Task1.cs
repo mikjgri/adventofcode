@@ -1,5 +1,3 @@
-using System.Runtime.InteropServices;
-
 public class Task1
 {
     private string[] _input;
