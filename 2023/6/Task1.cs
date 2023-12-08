@@ -24,7 +24,8 @@ public class Task1
     {
         var races = GetRaces();
 
-        //var result = races.Select(race =>
+        //var result = 1;
+        //foreach(var race in races)
         //{
         //    var possibleWins = 0;
         //    for (var i = 1; i < race.MaxTime; i++)
@@ -35,8 +36,8 @@ public class Task1
         //            possibleWins++;
         //        }
         //    }
-        //    return possibleWins;
-        //}).Aggregate((a, b) => a*b);
+        //    result *= possibleWins;
+        //}
 
         var result = races.Select(race => Enumerable.Range(1, race.MaxTime).Select(startTime => Simulate(race.MaxTime - startTime, startTime, race.Distance)).Where(raceTime => raceTime.HasValue).Count()).Aggregate((a, b) => a * b);
 
