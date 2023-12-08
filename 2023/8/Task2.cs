@@ -30,8 +30,7 @@ public class Task2
 
         while (!locations.All(x => x.EndsWith("Z")))
         {
-            var instructionIndex = step % instructions.Count;
-            var instruction = instructions[(int)instructionIndex];
+            var instruction = instructions[(int)(step % instructions.Count)];
 
             var newLocs = new List<string>();
 
