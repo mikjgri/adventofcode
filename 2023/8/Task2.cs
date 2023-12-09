@@ -1,5 +1,3 @@
-using System.Security;
-
 public class Task2
 {
     private string[] _input;
@@ -9,38 +7,50 @@ public class Task2
     }
     private Dictionary<string, (string left, string right)> GetMap()
     {
-        var ret = new Dictionary<string, (string left, string right)>();
-        foreach (var line in _input[2..])
+        return _input[2..].Select(line =>
         {
-            var split = line.Split("=");
-            var currentLocation = split[0].Trim();
-            var routes = split[1].Replace("(", "").Replace(")", "").Trim().Split(",");
-
-            ret.Add(currentLocation, (routes[0].Trim(), routes[1].Trim()));
-        }
-        return ret;
+            var split = line.Replace(" ", "").Split("=");
+            var currentLocation = split[0];
+            var routes = split[1].Replace("(", "").Replace(")", "").Split(",");
+            return (currentLocation, (routes[0], routes[1]));
+        }).ToDictionary();
     }
     public void Solve()
     {
-        var instructions = _input[0].Select(x => x.ToString()).ToList();
+        var instructions = _input[0];
         var map = GetMap();
 
-        double step = 0;
         var locations = map.Select(x => x.Key).Where(item => item.EndsWith("A")).ToList();
 
-        while (!locations.All(x => x.EndsWith("Z")))
+        var stepsRequired = locations.Select(location =>
         {
-            var instruction = instructions[(int)(step % instructions.Count)];
-
-            var newLocs = new List<string>();
-
-            foreach (var location in locations)
+            var loc = location;
+            double step = 0;
+            while (!loc.EndsWith("Z"))
             {
-                newLocs.Add(instruction == "L" ? map[location].left : map[location].right);
+                var instruction = instructions[((int)step % instructions.Length)].ToString();
+                loc = instruction == "L" ? map[loc].left : map[loc].right;
+                step++;
             }
-            locations = newLocs;
-            step++;
+            return step;
+        });
+
+        var result = stepsRequired.Aggregate(LCM);
+        Console.WriteLine(result);
+    }
+
+    private double GCF(double a, double b)
+    {
+        while (b != 0)
+        {
+            var temp = b;
+            b = a % b;
+            a = temp;
         }
-        Console.WriteLine(step);
+        return a;
+    }
+    private double LCM(double a, double b)
+    {
+        return a / GCF(a, b) * b;
     }
 }

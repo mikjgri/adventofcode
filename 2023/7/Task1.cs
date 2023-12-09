@@ -1,5 +1,3 @@
-using System.Text.RegularExpressions;
-
 public class Task1
 {
     private string[] _input;

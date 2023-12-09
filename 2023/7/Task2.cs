@@ -1,5 +1,3 @@
-using System.Text.RegularExpressions;
-
 public class Task2
 {
     private static int _joker = 1;
