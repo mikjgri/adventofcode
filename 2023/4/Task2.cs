@@ -1,17 +1,12 @@
-public class Task2
+public class Task2(string[] input)
 {
-    private string[] _input;
-    public Task2(string[] input)
-    {
-        _input = input;
-    }
     private List<(int Id, List<int> WinningNumbers, List<int> Numbers)> GetCards()
     {
         List<int> getNumbers(string numberSet) => numberSet.Trim().Split(' ').Where(item => !string.IsNullOrEmpty(item)).Select(x => int.Parse(x.Trim())).ToList();
-        return _input.Select(line =>
+        return input.Select(line =>
         {
             var numberSets = line.Split(":")[1].Split("|");
-            return (_input.ToList().IndexOf(line)+1, getNumbers(numberSets[0]), getNumbers(numberSets[1]));
+            return (input.ToList().IndexOf(line)+1, getNumbers(numberSets[0]), getNumbers(numberSets[1]));
         }).ToList();
     }
     public void Solve()

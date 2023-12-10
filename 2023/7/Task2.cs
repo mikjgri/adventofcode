@@ -1,14 +1,10 @@
-public class Task2
+public class Task2(string[] input)
 {
     private static int _joker = 1;
-    private string[] _input;
-    public Task2(string[] input)
-    {
-        _input = input;
-    }
+
     private List<Hand> GetHands()
     {
-        return _input.Select(line =>
+        return input.Select(line =>
         {
             var split = line.Split(" ");
             return (new Hand()

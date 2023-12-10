@@ -1,13 +1,8 @@
-public class Task2
+public class Task2(string[] input)
 {
-    private string[] _input;
-    public Task2(string[] input)
-    {
-        _input = input;
-    }
     private List<List<int>> GetHistories()
     {
-        return _input.Select(line => line.Split(' ').Select(number => int.Parse(number)).ToList()).ToList();
+        return input.Select(line => line.Split(' ').Select(number => int.Parse(number)).ToList()).ToList();
     }
     public void Solve()
     {
