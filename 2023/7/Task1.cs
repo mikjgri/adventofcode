@@ -1,13 +1,8 @@
-public class Task1
+public class Task1(string[] input)
 {
-    private string[] _input;
-    public Task1(string[] input)
-    {
-        _input = input;
-    }
     private List<Hand> GetHands()
     {
-        return _input.Select(line =>
+        return input.Select(line =>
         {
             var split = line.Split(" ");
             return (new Hand()

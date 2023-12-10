@@ -1,18 +1,13 @@
 using System.Text.RegularExpressions;
 
-public class Task1
+public class Task1(string[] input)
 {
-    private string[] _input;
-    public Task1(string[] input)
-    {
-        _input = input;
-    }
     private List<(int MaxTime, int Distance)> GetRaces()
     {
         string trimAllDoubleSpaces(string input) => Regex.Replace(input, @"\s+", " ");
         List<int> getInts(string input) => input.Split(":")[1].Trim().Split(" ").Select(item => int.Parse(item)).ToList();
-        var times = getInts(trimAllDoubleSpaces(_input[0]));
-        var distances = getInts(trimAllDoubleSpaces(_input[1]));
+        var times = getInts(trimAllDoubleSpaces(input[0]));
+        var distances = getInts(trimAllDoubleSpaces(input[1]));
         return times.Select(item => (item, distances[times.IndexOf(item)])).ToList();
     }
     private int? Simulate(int maxTime, int speed, int distance)

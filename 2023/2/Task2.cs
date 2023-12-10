@@ -1,15 +1,10 @@
-public class Task2
+public class Task2(string[] input)
 {
-    private string[] _input;
-    public Task2(string[] input)
-    {
-        _input = input;
-    }
     private List<List<List<(int count, string color)>>> GetGames()
     {
         var games = new List<List<List<(int count, string color)>>>();
 
-        foreach (var line in _input)
+        foreach (var line in input)
         {
             var retGame = new List<List<(int count, string color)>>();
             var game = line.Split(':')[1];

@@ -1,15 +1,10 @@
-public class Task1
+public class Task1(string[] input)
 {
-    private string[] _input;
-    public Task1(string[] input)
-    {
-        _input = input;
-    }
     private (string key, int number)? GetNumberInPosition(int lineNumber, int columnNumber)
     {
         if (lineNumber < 0 || columnNumber < 0) return null;
-        if (lineNumber > _input.Length || columnNumber > _input[0].Length) return null;
-        var line = _input[lineNumber];
+        if (lineNumber > input.Length || columnNumber > input[0].Length) return null;
+        var line = input[lineNumber];
         var c = line[columnNumber].ToString();
         if (int.TryParse(c, out _))
         {
@@ -33,9 +28,9 @@ public class Task1
         var positions = new List<(int x, int y)>() { (-1, 0), (1, 0), (0, -1), (0, 1), (-1, -1), (-1, 1), (1, -1), (1, 1) };
 
         var partNumbers = new Dictionary<string, int>();
-        for (var i = 0; i < _input.Length; i++)
+        for (var i = 0; i < input.Length; i++)
         {
-            var line = _input[i];
+            var line = input[i];
             for (var j = 0; j < line.Length; j++)
             {
                 var str = line[j].ToString();

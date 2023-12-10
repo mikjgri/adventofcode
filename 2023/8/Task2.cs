@@ -1,13 +1,8 @@
-public class Task2
+public class Task2(string[] input)
 {
-    private string[] _input;
-    public Task2(string[] input)
-    {
-        _input = input;
-    }
     private Dictionary<string, (string left, string right)> GetMap()
     {
-        return _input[2..].Select(line =>
+        return input[2..].Select(line =>
         {
             var split = line.Replace(" ", "").Split("=");
             var currentLocation = split[0];
@@ -17,7 +12,7 @@ public class Task2
     }
     public void Solve()
     {
-        var instructions = _input[0];
+        var instructions = input[0];
         var map = GetMap();
 
         var locations = map.Select(x => x.Key).Where(item => item.EndsWith("A")).ToList();

@@ -1,13 +1,8 @@
-public class Task2
+public class Task2(string[] input)
 {
-    private string[] _input;
-    public Task2(string[] input)
-    {
-        _input = input;
-    }
     private List<(string Source, string Target, List<(double source, double target, double range)> MapTable)> GetMaps()
     {
-        var mapLines = _input[2..];
+        var mapLines = input[2..];
         var maps = new List<(string Source, string Target, List<(double source, double target, double range)> MapTable)>();
 
         foreach (var line in mapLines)
@@ -31,7 +26,7 @@ public class Task2
 
         var lowestMap = double.MaxValue;
 
-        var seedSplit = _input[0].Split(":")[1].Trim().Split(" ");
+        var seedSplit = input[0].Split(":")[1].Trim().Split(" ");
 
         var seedRanges = new List<(double start, double range)>();
 
