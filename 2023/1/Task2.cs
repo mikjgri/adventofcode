@@ -1,9 +1,7 @@
-public class Task2{
+public class Task2(string[] input)
+{
     private string[] numbers = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine"];
-    private string[] _input;
-    public Task2(string[] input){
-        _input = input;
-    }
+
     public void Solve(){
         int result = 0;
 
@@ -21,7 +19,7 @@ public class Task2{
             return null;
         }
 
-        foreach (var line in _input){
+        foreach (var line in input){
             var first = 0;
             for (var i = 0; i < line.Length; i++){
                 var happy = getNumber(i, line);

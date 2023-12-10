@@ -1,14 +1,9 @@
-public class Task1
+public class Task1(string[] input)
 {
-    private string[] _input;
-    public Task1(string[] input)
-    {
-        _input = input;
-    }
     private List<(List<int> WinningNumbers, List<int> Numbers)> GetCards()
     {
         List<int> getNumbers(string numberSet) => numberSet.Trim().Split(' ').Where(item => !string.IsNullOrEmpty(item)).Select(x => int.Parse(x.Trim())).ToList();
-        return _input.Select(line =>
+        return input.Select(line =>
         {
             var numberSets = line.Split(":")[1].Split("|");
             return (getNumbers(numberSets[0]), getNumbers(numberSets[1]));
