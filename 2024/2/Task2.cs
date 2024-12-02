@@ -1,47 +1,15 @@
-using System.Net.Security;
-
 public class Task2(string[] input)
 {
     public void Solve(){
 
         var reports = input.Select(line => line.Split(" ").Select(int.Parse).ToList()).ToList();
 
-        var pro2 = reports.Where(report => report.Select((report, index) => (report, index)).Any(x =>
-        {
-            var clone = report.ToList().Skip(x.index).ToList();
-            return IsSafe(clone);
-        }));
-        
-        
-        var pro = reports.Where(report =>
-        {
-            for (var i = 0; i < report.Count; i++)
-            {
-                var clonedReport = report.ToList();
-                clonedReport.RemoveAt(i);
-                if (IsSafe(clonedReport))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        });
-        var pro3 = reports.Where(report =>
-        {
-            return report.Any(level =>
-            {
-                var clonedReport = report.ToList();
-                clonedReport.RemoveAt(report.IndexOf(level));
-                return IsSafe(clonedReport);
-            });
-        });
-        Console.WriteLine(pro2.Count());
+        Console.WriteLine(reports.Where(report => GetProblemDampened(report).Where(IsAllIncreasingOrDecreasing).Any(AdjecentWithinRange)).Count());
     }
     
-    bool IsSafe(List<int> levels)
+    List<List<int>> GetProblemDampened(List<int> report)
     {
-        return IsAllIncreasingOrDecreasing(levels) && AdjecentWithinRange(levels);
+        return report.Select((report, index) => (report, index)).Select(x => report.ToList().Where((item, index) => index != x.index).ToList()).ToList();
     }
     bool IsAllIncreasingOrDecreasing(List<int> levels)
     {

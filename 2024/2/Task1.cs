@@ -1,5 +1,3 @@
-using System.Net.Security;
-
 public class Task1(string[] input)
 {
     public void Solve(){
