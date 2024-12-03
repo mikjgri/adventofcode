@@ -4,7 +4,7 @@ public class Task2(string[] input)
 
         var reports = input.Select(line => line.Split(" ").Select(int.Parse).ToList()).ToList();
 
-        Console.WriteLine(reports.Where(report => GetProblemDampened(report).Where(IsAllIncreasingOrDecreasing).Any(AdjecentWithinRange)).Count());
+        Console.WriteLine(reports.Count(report => GetProblemDampened(report).Where(IsAllIncreasingOrDecreasing).Any(AdjecentWithinRange)));
     }
     
     List<List<int>> GetProblemDampened(List<int> report)
