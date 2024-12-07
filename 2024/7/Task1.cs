@@ -12,9 +12,9 @@ public class Task1(string[] input)
                     parts[1].Trim().Split(' ').Select(long.Parse).ToList()
                 )
             )).ToList();
-        Console.WriteLine(equations.Where(eq => IsPossiblyTrue(eq)).Sum(eq => eq.Item1));
+        Console.WriteLine(equations.Where(eq => MathChecksOut(eq)).Sum(eq => eq.Item1));
 
-        bool IsPossiblyTrue((long result, List< long> numbers) equation, long current = 0, string mathOperator = null)
+        bool MathChecksOut((long result, List< long> numbers) equation, long current = 0, string mathOperator = null)
         {
             if (equation.numbers.Count == 0)
             {
@@ -29,7 +29,7 @@ public class Task1(string[] input)
                 current += equation.numbers.First();
             }
             equation.numbers = equation.numbers[1..];
-            return IsPossiblyTrue(equation, current, "+") || IsPossiblyTrue(equation, current, "*");
+            return MathChecksOut(equation, current, "+") || MathChecksOut(equation, current, "*");
 
         }
     }
