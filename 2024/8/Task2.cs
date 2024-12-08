@@ -31,6 +31,6 @@ public class Task2(string[] input)
 
         Console.WriteLine(antinodeGrid.Sum(row => row.Count(column => column == '#')));
 
-        antinodeGrid.Visualize();
+        antinodeGrid.FancyVisualize();
     }
 }
