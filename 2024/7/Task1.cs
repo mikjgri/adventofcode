@@ -1,5 +1,3 @@
-using System.Data;
-
 public class Task1(string[] input)
 {
     public void Solve()
