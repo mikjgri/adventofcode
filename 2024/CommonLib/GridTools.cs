@@ -12,11 +12,15 @@
         }
         public static List<(int x, int y)> GenerateCoordinates(int columns, int rows)
         {
-            return Enumerable.Range(0, columns).SelectMany(y => Enumerable.Range(0, rows).Select(x => (x, y))).ToList();
+            return Enumerable.Range(0, rows).SelectMany(y => Enumerable.Range(0, columns).Select(x => (x, y))).ToList();
         }
         public static bool IsInGrid<T>((int x, int y) position, List<List<T>> grid)
         {
             return position.x >= 0 && position.y >= 0 && position.x < grid[0].Count && position.y < grid.Count;
+        }
+        public static (int xOff, int yOff)[] Get4DirectionOffsets()
+        {
+            return [(0,-1),(0,1),(-1,0),(1, 0)];
         }
     }
 }
