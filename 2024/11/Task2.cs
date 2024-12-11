@@ -4,8 +4,6 @@ public class Task2(string[] input)
 {
     public void Solve()
     {
-        var stones = input[0].Split(' ').Select(s => long.Parse(s)).ToList();
-
         var cache = new MemoryCache(new MemoryCacheOptions());
 
         long getStones(long stone, int blink)
@@ -43,6 +41,6 @@ public class Task2(string[] input)
             });
         }
 
-        Console.WriteLine(stones.Sum(s => getStones(s, 1)));
+        Console.WriteLine(input[0].Split(' ').Sum(s => getStones(int.Parse(s), 1)));
     }
 }
