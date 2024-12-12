@@ -5,7 +5,7 @@ public class Task2(string[] input)
     public void Solve()
     {
         var grid = input.Select(line => line.Select(c => int.Parse(c.ToString())).ToList()).ToList();
-        var directions = GridTools.Get4DirectionOffsets();
+        var directions = GridTools.GetSquare4DirectionOffsets();
 
         Console.WriteLine(GridTools.GenerateCoordinates(grid[0].Count, grid.Count).Where(pos => grid[pos.y][pos.x] == 0).Sum(pos => PathsToUniqueTops(pos, 0, []).Count));
 

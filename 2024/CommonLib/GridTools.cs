@@ -18,9 +18,13 @@
         {
             return position.x >= 0 && position.y >= 0 && position.x < grid[0].Count && position.y < grid.Count;
         }
-        public static (int xOff, int yOff)[] Get4DirectionOffsets()
+        public static (int xOff, int yOff)[] GetSquare4DirectionOffsets()
         {
-            return [(0,-1),(0,1),(-1,0),(1, 0)];
+            return [(0,-1),(1, 0),(0,1),(-1,0),];
+        }
+        public static (int xOff, int yOff)[] GetDiagonal4DirectionOffsets()
+        {
+            return [(-1,-1),(-1,1),(1,-1),(1, 1)];
         }
     }
 }
