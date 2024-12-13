@@ -26,5 +26,19 @@
         {
             return [(-1,-1),(-1,1),(1,-1),(1, 1)];
         }
+        public static (int xOff, int yOff)[] Get8DirectionOffsets()
+        {
+            return
+            [
+                (0, -1),   // Up
+                (1, 0),     // Right
+                (0, 1),     // Down
+                (-1, 0),    // Left
+                (-1, -1),   // Up-left
+                (-1, 1),    // Down-left
+                (1, -1),    // Up-right
+                (1, 1)      // Down-right
+            ];
+        }
     }
 }
