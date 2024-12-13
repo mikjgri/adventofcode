@@ -9,7 +9,7 @@ public class Task2(string[] input)
         var grid = input.CreateGrid();
         var coordinates = GridTools.GenerateCoordinates(grid[0].Count, grid.Count);
         var squareDirections = GridTools.GetSquare4DirectionOffsets().ToList();
-        var diagonalDirections = GridTools.GetDiagonal4DirectionOffsets();
+        var dir8 = GridTools.Get8DirectionOffsets();
 
         var handledCoordinates = new List<(int x, int y)>();
 
@@ -19,59 +19,48 @@ public class Task2(string[] input)
             if (gardens.Any(garden => garden.Region.Contains(coord))) continue;
             gardens.Add(GetGarden(coord, grid[coord.y][coord.x], new FlowerGarden()));
         }
-        //    var testGrid = Enumerable.Range(-2, 10)
-        //.Select(x => Enumerable.Range(-2, 10)
-        //    .Select(y => ".")
-        //    .ToList())
-        //.ToList();
-        //    Console.WriteLine(gardens.Sum(garden =>
-        //    {
-        //        var start = garden.Region.First();
-        //        var pos = start;
-        //        var dirChange = 0;
-        //        var prevDirIndex = -1;
-        //        while (dirChange == 0 || pos != start)
-        //        {
-        //            Console.Clear();
-        //            testGrid.Visualize();
-        //            testGrid[pos.y][pos.x] = "*";
-        //            var dir = directions.First(dir => garden.Region.Contains((pos.x + dir.xOff, pos.y + dir.yOff)));
-        //            var dirIndex = directions.IndexOf(dir);
-        //            if (dirIndex != prevDirIndex) dirChange++;
-        //            pos = (pos.x + dir.xOff, pos.y + dir.yOff);
-        //            var a = 123;
-        //        }
-        //        Console.WriteLine(dirChange);
-        //        return garden.Region.Count * dirChange;
-        //    }));
 
-        Console.WriteLine(gardens[..1].Sum(garden =>
+        foreach (var garden in gardens)
         {
-            var multipliedPerimeterList = new List<(int x, int y)>();
-            foreach(var peri in garden.Perimeter)
+            var corners = 0;
+            foreach (var spot in garden.Region)
             {
-                var numberOfRegionsUsing = squareDirections.Sum(dir => garden.Region.Count(reg => (reg.x + dir.xOff, reg.y + dir.yOff) == peri));
-                multipliedPerimeterList.AddRange(Enumerable.Repeat(peri, numberOfRegionsUsing));
-            }
-            
-            var start = multipliedPerimeterList.First();
-            var remaining = multipliedPerimeterList[1..multipliedPerimeterList.Count];
-            var pos = start;
-            var dirChange = 1;
-            for (var i = 0; i < multipliedPerimeterList.Count - 1; i++)
-            {
-                var nextNode = remaining.FirstOrDefault(rem => squareDirections.Any(dir => rem == (pos.x + dir.xOff, pos.y + dir.yOff)));
-                if (nextNode == default) //not found in square
+                var left = ((spot.x - 1, spot.y));
+                var containsLeft = garden.Region.Contains(left);
+                var right = ((spot.x + 1, spot.y));
+                var containsRight = garden.Region.Contains(right);
+                var up = ((spot.x, spot.y - 1));
+                var containsUp = garden.Region.Contains(up);
+                var down = ((spot.x, spot.y + 1));
+                var containsDown = garden.Region.Contains(down);
+
+                var containsLeftAndRight = containsLeft && containsRight;
+                var containsUpAndDown = containsUp && containsDown;
+
+                if (containsLeftAndRight || containsUpAndDown) //not corner
                 {
-                    dirChange++;
-                    nextNode = remaining.FirstOrDefault(rem => diagonalDirections.Any(dir => rem == (pos.x + dir.xOff, pos.y + dir.yOff)));
+                    continue;
                 }
-                remaining = remaining.Where(rem => rem != nextNode).ToList();
-                pos = nextNode;
+
+                var neighbours = squareDirections.Where(dir => garden.Region.Contains((spot.x + dir.xOff, spot.y + dir.yOff))).ToList();
+                if (neighbours.Count == 0)
+                {
+                    corners += 4;
+                    continue;
+                }
+                
+                if (a == 1)
+                {
+                    corners += 2;
+                }
+                else
+                {
+                    corners ++;
+                }
+                var b = 123;
             }
-            Console.WriteLine(dirChange);
-            return garden.Region.Count * dirChange;
-        }));
+            Console.WriteLine(corners);
+        }
 
         FlowerGarden GetGarden((int x, int y) pos, char plantType, FlowerGarden garden)
         {
@@ -93,5 +82,10 @@ public class Task2(string[] input)
     {
         public List<(int x, int y)> Perimeter = [];
         public List<(int x, int y)> Region = [];
+    }
+    class Traverse
+    {
+        public (int x, int y) Fence;
+        public (int xOff, int yOff) Direction;
     }
 }
