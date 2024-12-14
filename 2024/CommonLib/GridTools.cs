@@ -8,7 +8,7 @@
         }
         public static List<List<T>> InitializeGrid<T>(int columns, int rows, T value)
         {
-            return Enumerable.Range(0, columns).Select(c => Enumerable.Range(0, rows).Select(r => value).ToList()).ToList();
+            return Enumerable.Range(0, rows).Select(c => Enumerable.Range(0, columns).Select(r => value).ToList()).ToList();
         }
         public static List<(int x, int y)> GenerateCoordinates(int columns, int rows)
         {
