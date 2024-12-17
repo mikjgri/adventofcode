@@ -1,6 +1,8 @@
-public class Task1(string[] input)
+using CommonLib;
+
+public class Task1(string[] input) : BaseTask()
 {
-    public void Solve()
+    protected override void Solve()
     {
         var stones = input[0].Split(' ').Select(s => long.Parse(s)).ToList();
 

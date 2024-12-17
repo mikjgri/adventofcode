@@ -1,6 +1,8 @@
-public class Task2(string[] input)
+using CommonLib;
+
+public class Task2(string[] input) : BaseTask()
 {
-    public void Solve(){
+    protected override void Solve(){
 
         var reports = input.Select(line => line.Split(" ").Select(int.Parse).ToList()).ToList();
 

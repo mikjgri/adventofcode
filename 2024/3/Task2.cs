@@ -1,8 +1,9 @@
+using CommonLib;
 using System.Text.RegularExpressions;
 
-public class Task2(string[] input)
+public class Task2(string[] input) : BaseTask()
 {
-    public void Solve()
+    protected override void Solve()
     {
         var matches = Regex.Matches(string.Concat(input), @"mul\((\d+),(\d+)\)|(?<go>do\(\))|(?<stop>don't\(\))");
         var go = true;

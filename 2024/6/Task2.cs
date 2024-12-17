@@ -1,6 +1,8 @@
-public class Task2(string[] input)
+using CommonLib;
+
+public class Task2(string[] input) : BaseTask()
 {
-    public void Solve()
+    protected override void Solve()
     {
         var directions = new List<(int xOff, int yOff)>()
         {
