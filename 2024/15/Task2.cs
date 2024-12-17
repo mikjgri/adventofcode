@@ -1,6 +1,6 @@
 using CommonLib;
 
-public class Task2(string[] input) : BaseTask(input)
+public class Task2(string[] input) : BaseTask()
 {
     protected override void Solve()
     {
