@@ -1,10 +1,10 @@
 using CommonLib;
 
-public class Task2(string[] input) : BaseTask(input)
+public class Task2(string[] input) : BaseTask()
 {
     protected override void Solve()
     {
-        var grid = Input.CreateGrid();
+        var grid = input.CreateGrid();
 
         var coordinates = GridTools.GenerateCoordinates(grid[0].Count, grid.Count);
         var start = coordinates.First(c => grid[c.y][c.x] == 'S');
