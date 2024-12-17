@@ -1,8 +1,8 @@
 using CommonLib;
 
-public class Task1(string[] input)
+public class Task1(string[] input) : BaseTask()
 {
-    public void Solve()
+    protected override void Solve()
     {
         var grid = input.CreateGrid();
         var antinodeGrid = GridTools.InitializeGrid(grid.Count, grid[0].Count, '.');

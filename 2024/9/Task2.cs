@@ -1,8 +1,8 @@
 using CommonLib;
 
-public class Task2(string[] input)
+public class Task2(string[] input) : BaseTask()
 {
-    public void Solve()
+    protected override void Solve()
     {
         var diskMap = input[0].Select(c => int.Parse(c.ToString())).ToList();
 

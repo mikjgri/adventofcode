@@ -1,8 +1,9 @@
+using CommonLib;
 using Microsoft.Extensions.Caching.Memory;
 
-public class Task2(string[] input)
+public class Task2(string[] input) : BaseTask()
 {
-    public void Solve()
+    protected override void Solve()
     {
         var cache = new MemoryCache(new MemoryCacheOptions());
 

@@ -1,8 +1,9 @@
+using CommonLib;
 using System.Text.RegularExpressions;
 
-public class Task1(string[] input)
+public class Task1(string[] input) : BaseTask()
 {
-    public void Solve()
+    protected override void Solve()
     {
 
         var machines = new List<Machine>();

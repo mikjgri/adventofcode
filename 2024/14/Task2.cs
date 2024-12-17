@@ -1,10 +1,10 @@
 using CommonLib;
 using System.Text.RegularExpressions;
 
-public class Task2(string[] input)
+public class Task2(string[] input) : BaseTask()
 {
     private readonly (int width, int height) gridSize = (101, 103);
-    public void Solve()
+    protected override void Solve()
     {
         var robots = input.Select(line =>
         {

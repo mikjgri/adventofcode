@@ -1,8 +1,8 @@
 using CommonLib;
 
-public class Task1(string[] input)
+public class Task1(string[] input) : BaseTask()
 {
-    public void Solve()
+    protected override void Solve()
     {
         var grid = input.Select(line => line.Select(c => int.Parse(c.ToString())).ToList()).ToList();
         var directions = GridTools.GetSquare4DirectionOffsets();
