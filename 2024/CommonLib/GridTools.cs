@@ -14,9 +14,17 @@
         {
             return Enumerable.Range(0, rows).SelectMany(y => Enumerable.Range(0, columns).Select(x => (x, y))).ToList();
         }
+        public static (int x, int y) Offset((int x, int y) position, (int x, int y) offset)
+        {
+            return (position.x + offset.x, position.y + offset.y);
+        }
         public static bool IsInGrid<T>((int x, int y) position, List<List<T>> grid)
         {
             return position.x >= 0 && position.y >= 0 && position.x < grid[0].Count && position.y < grid.Count;
+        }
+        public static int GetManhattanDistance((int x, int y) pos1, (int x, int y) pos2)
+        {
+            return Math.Abs(pos1.x - pos2.x) + Math.Abs(pos1.y - pos2.y);
         }
         public static (int xOff, int yOff)[] GetSquare4DirectionOffsets()
         {
