@@ -1,4 +1,5 @@
 using CommonLib;
+using System;
 
 public class Task2(string[] input) : BaseTask()
 {
@@ -15,16 +16,13 @@ public class Task2(string[] input) : BaseTask()
         var route = MoveToEnd(start, []).SelectWithIndex().ToList();
         var maxSteps = route.Count - _saveRequirement;
 
-        var result = 0;
-        foreach (var (pos, thisindex) in route)
+        Console.WriteLine(route.Sum(position =>
         {
-            var future = route.Where(r => r.index > thisindex).ToList();
-            var inRange = future.Where(r => GridTools.GetManhattanDistance(r.item, pos) <= _cheatLength).ToList();
-            var validJump = inRange.Where(r => (thisindex + GridTools.GetManhattanDistance(pos, r.item) + (route.Count - r.index)) <= maxSteps).ToList();
-            result += validJump.Count;
-        }
-
-        Console.WriteLine(result);
+            var future = route.Where(r => r.index > position.index).ToList();
+            var inRange = future.Where(r => GridTools.GetManhattanDistance(r.item, position.item) <= _cheatLength).ToList();
+            var validJump = inRange.Where(r => (position.index + GridTools.GetManhattanDistance(position.item, r.item) + (route.Count - r.index)) <= maxSteps).ToList();
+            return validJump.Count;
+        }));
 
         List<(int x, int y)> MoveToEnd((int x, int y) pos, List<(int x, int y)> history)
         {
