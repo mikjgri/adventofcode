@@ -1,0 +1,17 @@
+using CommonLib;
+
+public class Task1(string[] input) : BaseTask()
+{
+    protected override void Solve()
+    {
+        var dialPosition = 50;
+        var instructions = input.Select(line => int.Parse(line[1..]) * (line.FirstOrDefault() == 'L' ? -1 : 1));
+
+        var sum = instructions.Sum(instr =>
+        {
+            dialPosition = (dialPosition+instr).Mod(100);
+            return dialPosition == 0 ? 1 : 0;
+        });
+        Console.WriteLine(sum);
+    }
+}

@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="1/1.csproj" />
+  <Project Path="CommonLib/CommonLib.csproj" />
+</Solution>
