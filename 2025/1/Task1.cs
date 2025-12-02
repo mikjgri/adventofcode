@@ -5,7 +5,7 @@ public class Task1(string[] input) : BaseTask()
     protected override void Solve()
     {
         var dialPosition = 50;
-        var instructions = input.Select(line => int.Parse(line[1..]) * (line.FirstOrDefault() == 'L' ? -1 : 1));
+        var instructions = input.Select(line => int.Parse(line[1..]) * (line.First() == 'L' ? -1 : 1));
 
         var sum = instructions.Sum(instr =>
         {
