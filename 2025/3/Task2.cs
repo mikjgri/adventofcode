@@ -1,5 +1,4 @@
 using CommonLib;
-using System.Collections.Concurrent;
 
 public class Task2(string[] input) : BaseTask()
 {
@@ -7,37 +6,18 @@ public class Task2(string[] input) : BaseTask()
     {
         var digitCount = 12;
 
-        var highestNumbers = new ConcurrentBag<double>();
-        Parallel.ForEach(input, line =>
+        Console.WriteLine(input.Sum(line =>
         {
-            var lineLength = line.Length;
-            var highestAtEachSize = new Dictionary<int, double>();
-            var allowedRange = Enumerable.Range(0, lineLength - digitCount+1);
-            var highestStartDigit = allowedRange.Max(i => line[i]);
-            var bestStarts = allowedRange.Where(i => line[i] == highestStartDigit).ToList();
-
-            var highest = bestStarts.Max(x => GetHighest(x, 0, digitCount));
-            highestNumbers.Add(highest);
-            double GetHighest(int index, double number, int digitsLeft)
+            var index = 0;
+            string numberStr = "";
+            for (var digitsLeft = digitCount; digitsLeft > 0; digitsLeft--)
             {
-                if (digitsLeft == 0) return number;
-                if (index >= lineLength) return 0;
-
-                var currentSize = digitCount - digitsLeft;
-                if (!highestAtEachSize.TryGetValue(currentSize, out var currentHighest) || currentHighest < number) highestAtEachSize[currentSize] = number;
-                if (currentHighest > number) return number; //seen better path. escape early
-
-                number = double.Parse(number.ToString() + line[index]);
-
-                double bestSubPath = 0;
-                for (var i = index + 1; i <= lineLength; i++)
-                {
-                    var pathResult = GetHighest(i, number, digitsLeft - 1);
-                    if (pathResult > bestSubPath) bestSubPath = pathResult;
-                }
-                return bestSubPath;
+                var remainingValidOptions = Enumerable.Range(index, line.Length - index - digitsLeft + 1);
+                var highestDigit = remainingValidOptions.Max(i => line[i]);
+                numberStr += highestDigit.ToString();
+                index = remainingValidOptions.First(i => line[i] == highestDigit) + 1;
             }
-        });
-        Console.WriteLine(highestNumbers.Sum());
+            return double.Parse(numberStr);
+        }));
     }
 }
