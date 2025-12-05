@@ -8,7 +8,7 @@ public class Task2(string[] input) : BaseTask()
         {
             var s = r.Split("-");
             return (long.Parse(s[0]), long.Parse(s[1]));
-        }).OrderBy(r => r.Item1).Distinct()];
+        }).Distinct()];
 
         var compressedRanges = true;
         while (compressedRanges)
@@ -44,4 +44,5 @@ public class Task2(string[] input) : BaseTask()
         }
         Console.WriteLine(ranges.Sum(r => r.end - r.start+1));
     }
+
 }
