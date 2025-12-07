@@ -5,5 +5,6 @@
   <Project Path="4/4.csproj" Id="eb01f4f4-aa90-4aac-ae69-c74acf85ffe3" />
   <Project Path="5/5.csproj" Id="375d4a86-3ec4-4e3c-a022-9d83339e62b5" />
   <Project Path="6/6.csproj" Id="30126355-a90b-4009-b69b-192e6a37d1c5" />
+  <Project Path="7/7.csproj" Id="710638f4-e0b9-4a67-b393-4f1d925e59c7" />
   <Project Path="CommonLib/CommonLib.csproj" />
 </Solution>
