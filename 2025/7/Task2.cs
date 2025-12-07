@@ -12,7 +12,7 @@ public class Task2(string[] input) : BaseTask()
         {
             for (var x = 0; x < grid[0].Count; x++)
             {
-                var valAbove = grid[y-1][x];
+                var valAbove = grid[y - 1][x];
                 var thisVal = grid[y][x];
                 if (valAbove == -1) continue;
                 if (thisVal != -1)
