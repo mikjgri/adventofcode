@@ -7,7 +7,7 @@ public class Task2(string[] input) : BaseTask()
         // ^ = -1
         // . = 0
         // S = 1
-        List<List<long>> grid = [.. input.Select(row => row.Select(val => val == '^' ? (long)-1 : (val == 'S' ? 1 : 0)).ToList())];
+        var grid = input.Select(row => row.Select(val => val == '^' ? (long)-1 : (val == 'S' ? 1 : 0)).ToList()).ToList();
         for (var y = 1; y < grid.Count; y++)
         {
             for (var x = 0; x < grid[0].Count; x++)
