@@ -57,7 +57,6 @@ public class Task1And2(string[] input) : BaseTask()
                 cB.Add(jbP.A);
                 continue;
             }
-            circuits.Add([jbP.A, jbP.B]);
         }
     }
     record JunctionBox(int X, int Y, int Z);
