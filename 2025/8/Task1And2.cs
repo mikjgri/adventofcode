@@ -36,13 +36,13 @@ public class Task1And2(string[] input) : BaseTask()
             {
                 if (cA != cB) //different circuits. merge
                 {
-                    if (circuits.Count == 2)
+                    cA.AddRange(cB.Where(jb => !cA.Contains(jb)));
+                    circuits.Remove(cB);
+                    if (circuits.Count == 1)
                     {
                         Console.WriteLine($"Task 2: {(long)jbP.A.X * jbP.B.X}");
                         break;
                     }
-                    cA.AddRange(cB.Where(jb => !cA.Contains(jb)));
-                    circuits.Remove(cB);
                 }
                 //else same circit
                 continue;
