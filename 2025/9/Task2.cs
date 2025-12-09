@@ -74,7 +74,7 @@ public class Task2(string[] input) : BaseTask()
             var minY = Math.Min(rP.t1.y, rP.t2.y);
             var maxY = Math.Max(rP.t1.y, rP.t2.y);
 
-            //check boundry first (quick)
+            //check entire boundry of rectangle
             for (var x = minX; x < maxX; x++)
             {
                 if (!isWithinBoundry((x, minY)) || !isWithinBoundry((x, maxY))) return false;
@@ -82,15 +82,6 @@ public class Task2(string[] input) : BaseTask()
             for (var y = minY; y < maxY; y++)
             {
                 if (!isWithinBoundry((minX, y)) || !isWithinBoundry((maxX, y))) return false;
-            }
-
-            //check content (slow. zzz)
-            for (var x = minX+1; x < maxX-1; x++)
-            {
-                for (var y = minY+1; y < maxY-1; y++)
-                {
-                    if (!isWithinBoundry((x, y))) return false;
-                }
             }
             return true; //happy!
         });
