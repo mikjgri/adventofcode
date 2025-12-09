@@ -21,7 +21,7 @@ public class Task2(string[] input) : BaseTask()
         //create hashset of green tiles
         foreach (var t1 in redTiles)
         {
-            var t2 = redTiles[(redTiles.IndexOf(t1) + 1) % redTiles.Count];
+            var t2 = redTiles[(redTiles.IndexOf(t1) + 1) % redTiles.Count]; //grabbing first if at end to make it bite its own tail
 
             if (t1.x != t2.x)
             {
@@ -74,19 +74,17 @@ public class Task2(string[] input) : BaseTask()
             var minY = Math.Min(rP.t1.y, rP.t2.y);
             var maxY = Math.Max(rP.t1.y, rP.t2.y);
 
-            //check boundry first (quicker)
+            //check boundry first (quick)
             for (var x = minX; x < maxX; x++)
             {
-                if (!isWithinBoundry((x, minY))) return false;
-                if (!isWithinBoundry((x, maxY))) return false;
+                if (!isWithinBoundry((x, minY)) || !isWithinBoundry((x, maxY))) return false;
             }
             for (var y = minY; y < maxY; y++)
             {
-                if (!isWithinBoundry((minX, y))) return false;
-                if (!isWithinBoundry((maxX, y))) return false;
+                if (!isWithinBoundry((minX, y)) || !isWithinBoundry((maxX, y))) return false;
             }
 
-            //check content (zzz)
+            //check content (slow. zzz)
             for (var x = minX+1; x < maxX-1; x++)
             {
                 for (var y = minY+1; y < maxY-1; y++)
@@ -94,7 +92,7 @@ public class Task2(string[] input) : BaseTask()
                     if (!isWithinBoundry((x, y))) return false;
                 }
             }
-            return true;
+            return true; //happy!
         });
         bool isWithinBoundry((int x, int y) p)
         {
