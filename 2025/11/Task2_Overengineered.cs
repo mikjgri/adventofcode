@@ -89,7 +89,7 @@ public class Task2_Overengineered(string[] input) : BaseTaskV2()
         }
         Console.WriteLine($"Preprocessed nodes. Can lead to; DAC = {nodes.Count(n => n.CanLeadToDac.Value)}, FFT = {nodes.Count(n => n.CanLeadToFft.Value)}");
 
-        var cache = new Dictionary<string, long>();
+        var memoizationCache = new Dictionary<string, long>();
 
         return(RunToOut(nodes.First(node => node.Id == "svr"), false, false));
 
@@ -104,7 +104,7 @@ public class Task2_Overengineered(string[] input) : BaseTaskV2()
 
             //check cache
             var cacheKey = $"{node.Id}{visitedDac}{visitedFft}";
-            if (cache.TryGetValue(cacheKey, out var cacheVal))
+            if (memoizationCache.TryGetValue(cacheKey, out var cacheVal))
             {
                 return cacheVal;
             }
@@ -114,7 +114,7 @@ public class Task2_Overengineered(string[] input) : BaseTaskV2()
             {
                 sum += RunToOut(child, visitedDac, visitedFft);
             }
-            cache.Add(cacheKey, sum);
+            memoizationCache.Add(cacheKey, sum);
             return sum;
         }
     }
