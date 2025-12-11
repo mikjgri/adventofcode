@@ -1,13 +1,14 @@
 ﻿using System.Diagnostics;
 
-namespace CommonLib;
+namespace CommonLib.Solvers;
 
 public abstract class BaseTask
 {
     public string DerivedFullName() => GetType().FullName;
+    public string AssemblyName => GetType().Assembly.GetName().Name!;
     public void Execute()
     {
-        Console.WriteLine(DerivedFullName());
+        Console.WriteLine($"Day {AssemblyName} - {DerivedFullName()}");
         var stopwatch = Stopwatch.StartNew();
         var result = Solve();
         stopwatch.Stop();

@@ -1,4 +1,4 @@
-using CommonLib;
+using CommonLib.Solvers;
 using System.Data;
 
 public class Task1(string[] input) : BaseTask()

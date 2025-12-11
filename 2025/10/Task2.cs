@@ -1,4 +1,4 @@
-using CommonLib;
+using CommonLib.Solvers;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 

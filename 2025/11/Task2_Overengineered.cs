@@ -1,4 +1,4 @@
-using CommonLib;
+using CommonLib.Solvers;
 using Spectre.Console.Rendering;
 
 public class Task2_Overengineered(string[] input) : BaseTask()
@@ -19,7 +19,7 @@ public class Task2_Overengineered(string[] input) : BaseTask()
         {
             if (!childrenTempDict.TryGetValue(node.Id, out var children)) continue;
             var childNodes = children.Select(child => nodes.FirstOrDefault(n => n.Id == child));
-            node.Children = [.. node.Children.Union(childNodes ?? [])];
+            node.Children = [.. node.Children.Union(childNodes ?? [])!];
         }
 
         var dacNode = nodes.First(n => n.Id == "dac");
@@ -87,7 +87,7 @@ public class Task2_Overengineered(string[] input) : BaseTask()
             }
             return anyGood;
         }
-        Console.WriteLine($"Preprocessed nodes. Can lead to; DAC = {nodes.Count(n => n.CanLeadToDac.Value)}, FFT = {nodes.Count(n => n.CanLeadToFft.Value)}");
+        Console.WriteLine($"Preprocessed nodes. Can lead to; DAC = {nodes.Count(n => n.CanLeadToDac!.Value)}, FFT = {nodes.Count(n => n.CanLeadToFft!.Value)}");
 
         var memoizationCache = new Dictionary<string, long>();
 

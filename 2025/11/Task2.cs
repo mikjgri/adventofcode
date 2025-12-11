@@ -1,4 +1,4 @@
-using CommonLib;
+using CommonLib.Solvers;
 
 public class Task2(string[] input) : BaseTask()
 {
@@ -18,7 +18,7 @@ public class Task2(string[] input) : BaseTask()
         {
             if (!childrenTempDict.TryGetValue(node.Id, out var children)) continue;
             var childNodes = children.Select(child => nodes.FirstOrDefault(n => n.Id == child));
-            node.Children = [.. node.Children.Union(childNodes ?? [])];
+            node.Children = [.. node.Children.Union(childNodes ?? [])!];
         }
 
         var dacNode = nodes.First(n => n.Id == "dac");

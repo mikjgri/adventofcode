@@ -1,4 +1,4 @@
-using CommonLib;
+using CommonLib.Solvers;
 
 public class Task1And2(string[] input) : VoidBaseTask()
 {

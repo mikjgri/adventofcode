@@ -1,4 +1,4 @@
-using CommonLib;
+using CommonLib.Solvers;
 using System.Collections.Concurrent;
 
 public class Task2(string[] input) : BaseTask()
