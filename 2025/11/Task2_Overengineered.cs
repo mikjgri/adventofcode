@@ -1,7 +1,7 @@
 using CommonLib;
 using Spectre.Console.Rendering;
 
-public class Task2_Overengineered(string[] input) : BaseTaskV2()
+public class Task2_Overengineered(string[] input) : BaseTask()
 {
     protected override object Solve()
     {

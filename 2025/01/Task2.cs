@@ -2,7 +2,7 @@ using CommonLib;
 
 public class Task2(string[] input) : BaseTask()
 {
-    protected override void Solve()
+    protected override object Solve()
     {
         var dialPosition = 50;
         var instructions = input.Select(line => int.Parse(line[1..]) * (line.First() == 'L' ? -1 : 1));
@@ -29,6 +29,6 @@ public class Task2(string[] input) : BaseTask()
             }
             return isClicky;
         });
-        Console.WriteLine(sum);
+        return sum;
     }
 }

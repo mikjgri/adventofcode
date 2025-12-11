@@ -3,7 +3,7 @@ using System.Collections.Concurrent;
 
 public class Task2(string[] input) : BaseTask()
 {
-    protected override void Solve()
+    protected override object Solve()
     {
         List<(double start, double end)> sets = [.. input.First().Split(",").Select(set =>
         {
@@ -29,6 +29,6 @@ public class Task2(string[] input) : BaseTask()
             }
         });
 
-        Console.WriteLine(invalidIds.Sum());
+        return invalidIds.Sum();
     }
 }

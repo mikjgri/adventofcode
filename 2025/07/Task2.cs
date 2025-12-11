@@ -2,7 +2,7 @@ using CommonLib;
 
 public class Task2(string[] input) : BaseTask()
 {
-    protected override void Solve()
+    protected override object Solve()
     {
         // ^ = -1
         // . = 0
@@ -27,6 +27,6 @@ public class Task2(string[] input) : BaseTask()
             }
         }
 
-        Console.WriteLine(Enumerable.Range(0, grid[0].Count).Sum(x => grid[^1][x]));
+        return Enumerable.Range(0, grid[0].Count).Sum(x => grid[^1][x]);
     }
 }

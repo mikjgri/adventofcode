@@ -2,7 +2,7 @@ using CommonLib;
 
 public class Task2(string[] input) : BaseTask()
 {
-    protected override void Solve()
+    protected override object Solve()
     {
 
         var directionOffsets = GridTools.Get8DirectionOffsets();
@@ -27,6 +27,6 @@ public class Task2(string[] input) : BaseTask()
             accessableToiletRolls.ForEach(coord => grid[coord.y][coord.x] = '.');
         }
 
-        Console.WriteLine(totalRemoved);
+        return totalRemoved;
     }
 }

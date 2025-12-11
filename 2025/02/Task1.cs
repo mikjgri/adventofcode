@@ -2,7 +2,7 @@ using CommonLib;
 
 public class Task1(string[] input) : BaseTask()
 {
-    protected override void Solve()
+    protected override object Solve()
     {
         List<(double start, double end)> sets = [.. input.First().Split(",").Select(set =>
         {
@@ -10,7 +10,7 @@ public class Task1(string[] input) : BaseTask()
             return (double.Parse(pair[0]), double.Parse(pair[1]));
         })];
 
-        Console.WriteLine(sets.Sum(set =>
+        return sets.Sum(set =>
             set.start.Range(set.end - set.start + 1).Sum(i =>
             {
                 var iString = i.ToString();
@@ -22,6 +22,6 @@ public class Task1(string[] input) : BaseTask()
                     return i;
                 return 0;
             })
-        ));
+        );
     }
 }

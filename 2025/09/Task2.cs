@@ -2,7 +2,7 @@
 
 public class Task2(string[] input) : BaseTask()
 {
-    protected override void Solve()
+    protected override object Solve()
     {
         List<(int x, int y)> redTiles = [.. input
             .Select(line =>{
@@ -94,6 +94,6 @@ public class Task2(string[] input) : BaseTask()
                 p.y >= rangeYatXValue.min && p.y <= rangeYatXValue.max;
 
         }
-        Console.WriteLine(max.Item3);
+        return max.Item3;
     }
 }

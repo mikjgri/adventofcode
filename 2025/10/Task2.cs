@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 public class Task2(string[] input) : BaseTask()
 {
     //works like a charm if you have a couple of years to run it
-    protected override void Solve()
+    protected override object Solve()
     {
         var machines = input.Select(line =>
         {
@@ -18,7 +18,7 @@ public class Task2(string[] input) : BaseTask()
             return new Machine(joltageGoalState, buttons);
         }).ToList();
 
-        Console.WriteLine(machines.Sum(machine =>
+        return machines.Sum(machine =>
         {
             var stopWatch = new Stopwatch();
             stopWatch.Start();
@@ -66,7 +66,7 @@ public class Task2(string[] input) : BaseTask()
                     FlipSwitches([.. state], flipCount, nextButton);
                 }
             }
-        }));
+        })!;
     }
     record Machine(int[] JoltageGoalState, Button[] Buttons);
     record Button(int[] Modifiers);

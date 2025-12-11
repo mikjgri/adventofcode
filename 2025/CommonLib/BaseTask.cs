@@ -9,9 +9,9 @@ public abstract class BaseTask
     {
         Console.WriteLine(DerivedFullName());
         var stopwatch = Stopwatch.StartNew();
-        Solve();
+        var result = Solve();
         stopwatch.Stop();
-        Console.WriteLine($"Execution Time: {stopwatch.ElapsedMilliseconds} ms");
+        Console.WriteLine($"Answer: {result}, Execution Time: {stopwatch.ElapsedMilliseconds} ms\n");
     }
-    protected abstract void Solve();
+    protected abstract object Solve();
 }

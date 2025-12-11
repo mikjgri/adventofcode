@@ -2,7 +2,7 @@ using CommonLib;
 
 public class Task1(string[] input) : BaseTask()
 {
-    protected override void Solve()
+    protected override object Solve()
     {
         var iterations = input.Length > 50 ? 1000 : 10; //demoset or not
         List<JunctionBox> junctionBoxes = [.. input.Select(line =>
@@ -50,7 +50,7 @@ public class Task1(string[] input) : BaseTask()
         }
 
         var ht = circuits.Select(c => c.Count).OrderDescending().Take(3).ToList();
-        Console.WriteLine(ht[0] * ht[1] * ht[2]);
+        return ht[0] * ht[1] * ht[2];
     }
     record JunctionBox(int X, int Y, int Z);
 

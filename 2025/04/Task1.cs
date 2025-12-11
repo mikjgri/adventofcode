@@ -2,7 +2,7 @@ using CommonLib;
 
 public class Task1(string[] input) : BaseTask()
 {
-    protected override void Solve()
+    protected override object Solve()
     {
         var grid = input.CreateGrid();
 
@@ -18,6 +18,6 @@ public class Task1(string[] input) : BaseTask()
                 return grid[adjecentCoord.y][adjecentCoord.x] == '@';
             }) < 4;
         });
-        Console.WriteLine(accessableToiletRolls);
+        return accessableToiletRolls;
     }
 }

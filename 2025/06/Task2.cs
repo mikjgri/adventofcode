@@ -3,7 +3,7 @@ using System.Data;
 
 public class Task2(string[] input) : BaseTask()
 {
-    protected override void Solve()
+    protected override object Solve()
     {
         var rotatedInput = new string[input[0].Length];
         var operators = new List<char>();
@@ -34,6 +34,6 @@ public class Task2(string[] input) : BaseTask()
             sums.Add(Convert.ToInt64(dataTable.Compute(expression, "")));
         }
 
-        Console.WriteLine(sums.Sum());
+        return sums.Sum();
     }
 }

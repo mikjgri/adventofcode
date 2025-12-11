@@ -2,7 +2,7 @@ using CommonLib;
 
 public class Task1(string[] input) : BaseTask()
 {
-    protected override void Solve()
+    protected override object Solve()
     {
         var grid = input.CreateGrid();
         var wasteland = new List<(int x, int y)>();
@@ -27,6 +27,6 @@ public class Task1(string[] input) : BaseTask()
             }
 
         }
-        Console.WriteLine(alderaansDestroyed);
+        return alderaansDestroyed;
     }
 }

@@ -1,6 +1,6 @@
 using CommonLib;
 
-public class Task2(string[] input) : BaseTaskV2()
+public class Task2(string[] input) : BaseTask()
 {
     protected override object Solve()
     {

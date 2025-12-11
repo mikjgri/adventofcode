@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 public class Task1(string[] input) : BaseTask()
 {
-    protected override void Solve()
+    protected override object Solve()
     {
         var machines = input.Select(line =>
         {
@@ -16,7 +16,7 @@ public class Task1(string[] input) : BaseTask()
             return new Machine(lightGoalState, buttons);
         }).ToList();
 
-        Console.WriteLine(machines.Sum(machine =>
+        return machines.Sum(machine =>
         {
             int? bestFlipCount = null;
             var dynamicFailOutValue = 1;
@@ -52,7 +52,7 @@ public class Task1(string[] input) : BaseTask()
                     FlipSwitches([.. state], flipCount, nextButton);
                 }
             }
-        }));
+        })!;
     }
     record Machine(bool[] LightGoalState, Button[] Buttons);
     record Button(int[] Modifiers);

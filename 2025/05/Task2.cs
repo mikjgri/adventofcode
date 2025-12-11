@@ -2,7 +2,7 @@ using CommonLib;
 
 public class Task2(string[] input) : BaseTask()
 {
-    protected override void Solve()
+    protected override object Solve()
     {
         List<(long start, long end)> ranges = [.. input.TakeWhile(x => !string.IsNullOrEmpty(x)).Select(r =>
         {
@@ -42,7 +42,7 @@ public class Task2(string[] input) : BaseTask()
             }
             ranges = [.. rCopy.Distinct()];
         }
-        Console.WriteLine(ranges.Sum(r => r.end - r.start+1));
+        return ranges.Sum(r => r.end - r.start+1);
     }
 
 }

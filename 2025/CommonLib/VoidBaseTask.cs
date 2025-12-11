@@ -2,16 +2,16 @@
 
 namespace CommonLib;
 
-public abstract class BaseTaskV2
+public abstract class VoidBaseTask
 {
     public string DerivedFullName() => GetType().FullName;
     public void Execute()
     {
         Console.WriteLine(DerivedFullName());
         var stopwatch = Stopwatch.StartNew();
-        var result = Solve();
+        Solve();
         stopwatch.Stop();
-        Console.WriteLine($"Answer: {result}, Execution Time: {stopwatch.ElapsedMilliseconds} ms\n");
+        Console.WriteLine($"Execution Time: {stopwatch.ElapsedMilliseconds} ms\n");
     }
-    protected abstract object Solve();
+    protected abstract void Solve();
 }

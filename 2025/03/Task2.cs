@@ -2,11 +2,11 @@ using CommonLib;
 
 public class Task2(string[] input) : BaseTask()
 {
-    protected override void Solve()
+    protected override object Solve()
     {
         var digitCount = 12;
 
-        Console.WriteLine(input.Sum(line =>
+        return input.Sum(line =>
         {
             var index = 0;
             string numberStr = "";
@@ -18,6 +18,6 @@ public class Task2(string[] input) : BaseTask()
                 index = remainingValidOptions.First(i => line[i] == highestDigit) + 1;
             }
             return double.Parse(numberStr);
-        }));
+        });
     }
 }
