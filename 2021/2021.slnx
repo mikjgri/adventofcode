@@ -1,5 +1,6 @@
 <Solution>
   <Project Path="01/01.csproj" />
   <Project Path="02/02.csproj" Id="ae0ad1a3-d050-471e-8833-84ffc5e9438e" />
+  <Project Path="03/03.csproj" Id="21f33728-7c28-454a-be01-d470e01aafd8" />
   <Project Path="CommonLib/CommonLib.csproj" />
 </Solution>
