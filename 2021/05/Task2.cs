@@ -38,7 +38,6 @@ public class Task2(string[] input) : BaseTask()
                 grid[y][x]++;
             }
         }
-        //grid.Visualize();
 
         return grid.Sum(row => row.Count(col => col > 1));
     }
