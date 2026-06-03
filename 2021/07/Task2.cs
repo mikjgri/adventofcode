@@ -1,6 +1,5 @@
 using CommonLib;
 using CommonLib.Solvers;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 public class Task2(string[] input) : BaseTask()
 {
