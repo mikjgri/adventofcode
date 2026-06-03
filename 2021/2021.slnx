@@ -3,5 +3,6 @@
   <Project Path="02/02.csproj" Id="ae0ad1a3-d050-471e-8833-84ffc5e9438e" />
   <Project Path="03/03.csproj" Id="21f33728-7c28-454a-be01-d470e01aafd8" />
   <Project Path="04/04.csproj" Id="69d1ec49-0cdd-41a5-abdc-3108a5c202b2" />
+  <Project Path="05/05.csproj" Id="f0bfba68-bf97-44b7-9d96-ec34a93e0840" />
   <Project Path="CommonLib/CommonLib.csproj" />
 </Solution>
