@@ -5,13 +5,13 @@ public class Task2(string[] input) : BaseTask()
 {
     protected override object Solve()
     {
-        var pairs = new List<(char, char, int)>()
-        {
+        List<(char opening, char closing, int score)> pairs =
+        [
             ('(',')', 1),
             ('[',']', 2),
             ('{','}', 3),
             ('<','>', 4)
-        };
+        ];
         var incompleteLines = new List<string>();
         foreach (var item in input)
         {
@@ -25,12 +25,12 @@ public class Task2(string[] input) : BaseTask()
                     var cCurrent = wItem[i];
                     var cNext = wItem[i + 1];
 
-                    if (pairs.Any(p => p.Item2 == cNext)) //next is closing
+                    if (pairs.Any(p => p.closing == cNext)) //next is closing
                     {
                         foundClosing = true;
-                        var currentPair = pairs.FirstOrDefault(p => p.Item1 == cCurrent);
+                        var currentPair = pairs.FirstOrDefault(p => p.opening == cCurrent);
 
-                        if (cNext == currentPair.Item2) //expected closing value. happy, remove pair
+                        if (cNext == currentPair.closing) //expected closing value. happy, remove pair
                         {
                             var subStr = wItem.Remove(i, 2);
                             wItem = subStr;
@@ -58,7 +58,7 @@ public class Task2(string[] input) : BaseTask()
             foreach (var c in chars)
             {
                 sum *= 5;
-                sum += pairs.First(p => p.Item1 == c).Item3;
+                sum += pairs.First(p => p.opening == c).score;
             }
             return sum;
         }).Order().ToArray();

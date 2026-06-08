@@ -5,13 +5,13 @@ public class Task1(string[] input) : BaseTask()
 {
     protected override object Solve()
     {
-        var pairs = new List<(char, char, int)>()
-        {
+        List<(char opening, char closing, int score)> pairs =
+        [
             ('(',')', 3),
             ('[',']', 57),
             ('{','}', 1197),
             ('<','>', 25137)
-        };
+        ];
         long sum = 0;
         foreach (var item in input)
         {
@@ -25,12 +25,12 @@ public class Task1(string[] input) : BaseTask()
                     var cCurrent = wItem[i];
                     var cNext = wItem[i + 1];
 
-                    if (pairs.Any(p => p.Item2 == cNext)) //next is closing
+                    if (pairs.Any(p => p.closing == cNext)) //next is closing
                     {
                         foundClosing = true;
-                        var currentPair = pairs.FirstOrDefault(p => p.Item1 == cCurrent);
+                        var currentPair = pairs.FirstOrDefault(p => p.opening == cCurrent);
 
-                        if (cNext == currentPair.Item2) //expected closing value. happy, remove pair
+                        if (cNext == currentPair.closing) //expected closing value. happy, remove pair
                         {
                             var subStr = wItem.Remove(i, 2);
                             wItem = subStr;
@@ -38,7 +38,7 @@ public class Task1(string[] input) : BaseTask()
                         }
                         else
                         {
-                            //Console.WriteLine($"Expected {currentPair.Item2}, but found {cNext} instead.");
+                            //Console.WriteLine($"Expected {currentPair.closing}, but found {cNext} instead.");
                             corruptChar = cNext;
                             break;
                         }
@@ -52,7 +52,7 @@ public class Task1(string[] input) : BaseTask()
 
             if (corruptChar.HasValue)
             {
-                sum += pairs.First(p => corruptChar.Value == p.Item1 || corruptChar.Value == p.Item2).Item3;
+                sum += pairs.First(p => corruptChar.Value == p.opening || corruptChar.Value == p.closing).score;
             }
         }
         return sum;
