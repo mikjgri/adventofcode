@@ -8,5 +8,6 @@
   <Project Path="07/07.csproj" Id="57760cb6-0853-4ed4-8da8-970edb0ddcad" />
   <Project Path="08/08.csproj" Id="803ec50e-a6f1-4717-976d-f63d12c1df9a" />
   <Project Path="09/09.csproj" Id="d8380a4b-bc6f-4b49-939d-c3270bd9f99a" />
+  <Project Path="10/10.csproj" Id="4f78a478-34f9-45f6-bdef-249859c162cb" />
   <Project Path="CommonLib/CommonLib.csproj" />
 </Solution>
