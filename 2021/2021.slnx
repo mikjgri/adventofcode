@@ -11,5 +11,6 @@
   <Project Path="10/10.csproj" Id="4f78a478-34f9-45f6-bdef-249859c162cb" />
   <Project Path="11/11.csproj" Id="31c77904-b8a3-4cd7-b09c-b429e9fe40f0" />
   <Project Path="12/12.csproj" Id="99531307-c185-4d76-8f3a-054c8e06ee17" />
+  <Project Path="13/13.csproj" Id="8d3945a6-4dd5-42bb-9de3-045fcf5dae2f" />
   <Project Path="CommonLib/CommonLib.csproj" />
 </Solution>
