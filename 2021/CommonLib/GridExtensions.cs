@@ -10,4 +10,8 @@ public static class GridExtensions
     {
         return [.. input.Select(line => line.Select(c => c).ToList())];
     }
+    public static List<List<T>> CreateGrid<T>(this IEnumerable<string> input, Func<char, T> parser)
+    {
+        return [.. input.Select(line => line.Select(c => parser(c)).ToList())];
+    }
 }

@@ -26,6 +26,10 @@ public static class GridTools
     {
         return position.x >= 0 && position.y >= 0 && position.x < grid[0].Count && position.y < grid.Count;
     }
+    public static bool IsInGrid<T>((int x, int y) position, T[][] grid)
+    {
+        return position.x >= 0 && position.y >= 0 && position.x < grid[0].Length && position.y < grid.Length;
+    }
     public static int GetManhattanDistance((int x, int y) pos1, (int x, int y) pos2)
     {
         return Math.Abs(pos1.x - pos2.x) + Math.Abs(pos1.y - pos2.y);
